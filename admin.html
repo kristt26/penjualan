@@ -2,24 +2,39 @@
 <html lang="en">
 
 <head>
-    <title>Matrix Admin</title>
+    <title>Sistem informasi Stock Barang</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="css/fullcalendar.css" />
     <link rel="stylesheet" href="css/matrix-style.css" />
     <link rel="stylesheet" href="css/matrix-media.css" />
     <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/jquery.gritter.css" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+    <script src="js/angular/angular.min.js"></script>
+    <script src="js/angular/angular-animate.min.js"></script>
+    <script src="js/angular/angular-route.js"></script>
+    <script src="apps/app.js"></script>
+    <script src="apps/Controller.js"></script>
+    <script src="js/matrix.wizard.js"></script>
+    <link rel="stylesheet" href="css/colorpicker.css" />
+    <link rel="stylesheet" href="css/datepicker.css" />
+    <link rel="stylesheet" href="css/uniform.css" />
+    <link rel="stylesheet" href="css/select2.css" />
+    <link rel="stylesheet" href="css/bootstrap-wysihtml5.css" />
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
 </head>
 
-<body>
+<body ng-app="app">
 
     <!--Header-part-->
     <div id="header">
-        <h1><a href="dashboard.html">Matrix Admin</a></h1>
+        <h1><a href="dashboard.html">Panjualan</a></h1>
     </div>
     <!--close-Header-part-->
+
 
     <!--top-Header-menu-->
     <div id="user-nav" class="navbar navbar-inverse">
@@ -44,28 +59,45 @@
                     <li><a class="sTrash" title="" href="#"><i class="icon-trash"></i> trash</a></li>
                 </ul>
             </li>
-            <li class=""><a title="" href="#"><i class="icon icon-cog"></i> <span class="text">Settings</span></a></li>
-            <li class=""><a title="" href="login.html"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
+            <li class="dropdown" id="settings"><a href="#" data-toggle="dropdown" data-target="#settings" class="dropdown-toggle"><i class="icon icon-cog"></i> <span class="text">Settings</span><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a title="" href="#!Price"><i class="icon-pencil"></i> Price</a></li>
+                    <li class="divider"></li>
+                    <li><a title="" href="#!Discount"><i class="icon-pencil"></i> Discount</a></li>
+                </ul>
+            </li>
+            <li class=""><a title="" href="#!Log"><i class="icon icon-share-alt"></i> <span class="text">Logout</span></a></li>
         </ul>
     </div>
-
+    <!--close-top-Header-menu-->
     <!--start-top-serch-->
     <div id="search">
         <input type="text" placeholder="Search here..." />
         <button type="submit" class="tip-bottom" title="Search"><i class="icon-search icon-white"></i></button>
     </div>
     <!--close-top-serch-->
-
     <!--sidebar-menu-->
-
-    <div id="sidebar"> <a href="#" class="visible-phone"><i class="icon icon-list"></i>Forms</a>
+    <div id="sidebar"><a href="#" class="visible-phone"><i class="icon icon-home"></i> Dashboard</a>
         <ul>
-            <li><a href="index.html"><i class="icon icon-home"></i> <span>Dashboard</span></a> </li>
-            <li><a href="charts.html"><i class="icon icon-signal"></i> <span>Charts &amp; graphs</span></a> </li>
-            <li><a href="widgets.html"><i class="icon icon-inbox"></i> <span>Widgets</span></a> </li>
+            <li class="active"><a href="#!Main"><i class="icon icon-home"></i> <span>Home</span></a> </li>
+            <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Master Data</span> <span class="label label-important">3</span></a>
+                <ul>
+                    <li><a href="#!Kategori">Kategori Barang</a></li>
+                    <li><a href="#!Barang">Barang</a></li>
+                    <li><a href="#!Supplier">Supplier</a></li>
+                </ul>
+            </li>
+            <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Transaksi</span> <span class="label label-important">3</span></a>
+                <ul>
+                    <li><a href="#!Pembelian">Pembelian</a></li>
+                    <li><a href="#!Return">Return</a></li>
+                </ul>
+            </li>
+            <li> <a href="charts.html"><i class="icon icon-signal"></i> <span>Charts &amp; graphs</span></a> </li>
+            <li> <a href="widgets.html"><i class="icon icon-inbox"></i> <span>Widgets</span></a> </li>
             <li><a href="tables.html"><i class="icon icon-th"></i> <span>Tables</span></a></li>
             <li><a href="grid.html"><i class="icon icon-fullscreen"></i> <span>Full width</span></a></li>
-            <li class="submenu active"> <a href="#"><i class="icon icon-list"></i> <span>Forms</span> <span class="label label-important">3</span></a>
+            <li class="submenu"> <a href="#"><i class="icon icon-th-list"></i> <span>Forms</span> <span class="label label-important">3</span></a>
                 <ul>
                     <li><a href="form-common.html">Basic Form</a></li>
                     <li><a href="form-validation.html">Form with Validation</a></li>
@@ -107,80 +139,92 @@
             </li>
         </ul>
     </div>
+    <!--sidebar-menu-->
+
+    <!--main-container-part-->
     <div id="content">
+        <!--breadcrumbs-->
         <div id="content-header">
-            <div id="breadcrumb"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#">Form elements</a> <a href="#" class="current">Form wizard</a> </div>
-            <h1>Form wizard</h1>
+            <div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a></div>
         </div>
-        <div class="container-fluid">
-            <hr>
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="widget-box">
-                        <div class="widget-title"> <span class="icon"> <i class="icon-pencil"></i> </span>
-                            <h5>Form wizard &amp; validation</h5>
-                        </div>
-                        <div class="widget-content nopadding">
-                            <form id="form-wizard" class="form-horizontal" method="post">
-                                <div id="form-wizard-1" class="step">
-                                    <div class="control-group">
-                                        <label class="control-label">Username</label>
-                                        <div class="controls">
-                                            <input id="username" type="text" name="username" />
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">Password</label>
-                                        <div class="controls">
-                                            <input id="password" type="password" name="password" />
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">Confirm Password</label>
-                                        <div class="controls">
-                                            <input id="password2" type="password" name="password2" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="form-wizard-2" class="step">
-                                    <div class="control-group">
-                                        <label class="control-label">Email</label>
-                                        <div class="controls">
-                                            <input id="email" type="text" name="email" />
-                                        </div>
-                                    </div>
-                                    <div class="control-group">
-                                        <label class="control-label">EULA</label>
-                                        <div class="controls">
-                                            <input id="eula" type="checkbox" name="eula" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-actions">
-                                    <input id="back" class="btn btn-primary" type="reset" value="Back" />
-                                    <input id="next" class="btn btn-primary" type="submit" value="Next" />
-                                    <div id="status"></div>
-                                </div>
-                                <div id="submitted"></div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+        <div>
+            <ng-view></ng-view>
         </div>
+
+
+
     </div>
+
+    <!--end-main-container-part-->
+
     <!--Footer-part-->
+
     <div class="row-fluid">
         <div id="footer" class="span12"> 2013 &copy; Matrix Admin. Brought to you by <a href="http://themedesigner.in">Themedesigner.in</a> </div>
     </div>
+
     <!--end-Footer-part-->
+
+    <script src="js/excanvas.min.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery.ui.custom.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.validate.js"></script>
-    <script src="js/jquery.wizard.js"></script>
+    <script src="js/jquery.flot.min.js"></script>
+    <script src="js/jquery.flot.resize.min.js"></script>
+    <script src="js/jquery.peity.min.js"></script>
+    <script src="js/fullcalendar.min.js"></script>
     <script src="js/matrix.js"></script>
+    <script src="js/matrix.dashboard.js"></script>
+    <script src="js/jquery.gritter.min.js"></script>
+    <script src="js/matrix.interface.js"></script>
+    <script src="js/matrix.chat.js"></script>
+    <script src="js/jquery.validate.js"></script>
+    <script src="js/matrix.form_validation.js"></script>
+    <script src="js/jquery.wizard.js"></script>
+    <script src="js/jquery.uniform.js"></script>
+    <script src="js/select2.min.js"></script>
+    <script src="js/matrix.popover.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/matrix.tables.js"></script>
+    <script src="js/bootstrap-colorpicker.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/jquery.toggle.buttons.js"></script>
+    <script src="js/masked.js"></script>
+    <script src="js/matrix.form_common.js"></script>
+    <script src="js/wysihtml5-0.3.0.js"></script>
+    <script src="js/bootstrap-wysihtml5.js"></script>
     <script src="js/matrix.wizard.js"></script>
+    <script>
+        $('.textarea_editor').wysihtml5();
+    </script>
+
+
+
+    <script type="text/javascript">
+        // This function is called from the pop-up menus to transfer to
+        // a different page. Ignore if the value returned is a null string:
+        function goPage(newURL) {
+
+            // if url is empty, skip the menu dividers and reset the menu selection to default
+            if (newURL != "") {
+
+                // if url is "-", it is this page -- reset the menu:
+                if (newURL == "-") {
+                    resetMenu();
+                }
+                // else, send page to designated URL            
+                else {
+                    document.location.href = newURL;
+                }
+            }
+        }
+
+        // resets the menu selection upon entry to this page:
+        function resetMenu() {
+            document.gomenu.selector.selectedIndex = 2;
+        }
+    </script>
 </body>
 
 </html>
