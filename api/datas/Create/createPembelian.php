@@ -51,6 +51,9 @@ try{
         $detailbeli->HargaBeli=$Value->HargaBeli;
         $detailbeli->Jumlah=$Value->Jumlah;
         $detailbeli->BarangId=$Value->BarangId;
+
+        $a=str_replace("-","",$pembelian->TglBeli);
+        $detailbeli->KodeBarang=$a.$pembelian->SuplierId.$Value->BarangId;
         $stmtDetail = $detailbeli->create();
         $barang->IdBarang=$Value->BarangId;
         $barang->readOne();

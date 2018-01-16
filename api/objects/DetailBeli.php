@@ -79,7 +79,7 @@ class DetailBeli{
        $query = "INSERT INTO
                    " . $this->table_name . "
                SET
-                   HargaBeli=:HargaBeli, Jumlah=:Jumlah, PembelianId=:PembelianId, BarangId=:BarangId";
+                   HargaBeli=:HargaBeli, Jumlah=:Jumlah, KodeBarang=:KodeBarang, PembelianId=:PembelianId, BarangId=:BarangId";
     
        // prepare query
        $stmt = $this->conn->prepare($query);
@@ -89,12 +89,14 @@ class DetailBeli{
        $this->Jumlah=htmlspecialchars(strip_tags($this->Jumlah));
        $this->PembelianId=htmlspecialchars(strip_tags($this->PembelianId));
        $this->BarangId=htmlspecialchars(strip_tags($this->BarangId));
+       $this->KodeBarang=htmlspecialchars(strip_tags($this->KodeBarang));
     
        // bind values
        $stmt->bindParam(":HargaBeli", $this->HargaBeli);
        $stmt->bindParam(":Jumlah", $this->Jumlah);
        $stmt->bindParam(":PembelianId", $this->PembelianId);
        $stmt->bindParam(":BarangId", $this->BarangId);
+       $stmt->bindParam(":KodeBarang", $this->KodeBarang);
     
        // execute query
        if($stmt->execute()){
@@ -171,4 +173,6 @@ class DetailBeli{
             return false;
        }
    }
+
+  
 }

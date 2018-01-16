@@ -113,6 +113,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Barang</th>
+                            <th>Kode Barang</th>
                             <th>Jumlah</th>
                             <th>Harga Beli</th>
                         </tr>
@@ -121,6 +122,7 @@
                         <tr class="odd gradeX" ng-repeat="item in ViewDetailBarang">
                             <td>{{$index+1}}</td>
                             <td>{{item.NamaBarang}}</td>
+                            <td>{{item.KodeBarang}}</td>
                             <td>{{item.Jumlah}}</td>
                             <td>{{item.HargaBeli}}</td>
                         </tr>

@@ -1,5 +1,5 @@
 <?php
-class Return{
+class Returnn{
  
     // database connection and table name
     private $conn;

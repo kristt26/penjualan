@@ -65,7 +65,8 @@ if($numpembelian>0)
                 "Jumlah"=>$Jumlah,
                 "PembelianId"=>$pembelian->IdPembelian,
                 "BarangId"=>$BarangId,
-                "NamaBarang"=>$barang->NamaBarang
+                "NamaBarang"=>$barang->NamaBarang,
+                "KodeBarang"=>$KodeBarang
             );
             array_push($Pembelian_item["ItemBarang"], $barang_item);
 

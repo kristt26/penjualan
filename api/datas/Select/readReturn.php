@@ -20,11 +20,14 @@ $db = $database->getConnection();
  
 // initialize object
 $barang = new Barang($db);
-$return =  new Return($db);
+$return =  new Returnn($db);
+$detail = new DetailBeli($db);
+$supplier = new Supplier($db);
+$pembelian = new Pembelian($db);
  
 // query products
-$stmt = $barang->read();   
-$num = $stmt->rowCount();
+$stmtreturn = $return->read();   
+$num = $stmtreturn->rowCount();
  
 // check if more than 0 record found
 if($num>0){
@@ -36,18 +39,24 @@ if($num>0){
     // retrieve our table contents
     // fetch() is faster than fetchAll()
     // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+    while ($rowRetun = $stmtreturn->fetch(PDO::FETCH_ASSOC)){
         // extract row
         // this will make $row['name'] to
         // just $name only
-        extract($row);
- 
+        extract($rowRetun);
+        $supplier->IdSupplier=$IdSupplier;
+        $supplier->readOne();
+        $detail->IdDetail=$DetailId;
+        
+         
         $product_item=array(
-            "IdBarang" => $IdBarang,
-            "NamaBarang" => $NamaBarang,
-            "Stock" => $Stock,
-            "Keterangan" => $Keterangan,
-            "KategoriId"=> $KategoriId
+            "IdReturn" => $IdReturn,
+            "IdSupplier" => $IdSupplier,
+            "TglReturn" => $TglReturn,
+            "Jumlah" => $Jumlah,
+            "DetailId"=> $KategoriId,
+            "NamaSupplier"=>$supplier->NamaSupplier,
+            ""
         );
  
         array_push($products_arr["records"], $product_item);
