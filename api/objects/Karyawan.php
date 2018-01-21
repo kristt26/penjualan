@@ -14,6 +14,7 @@ class Karyawan{
     public $Email;
     public $Password;
     public $LevelAkses;
+    public $Status;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -97,7 +98,14 @@ class Karyawan{
        $query = "INSERT INTO
                    " . $this->table_name . "
                SET
-                   Nama=:Nama, Sex=:Sex, Kontak=:Kontak, Alamat=:Alamat, Email=:Email, Password=:Password, LevelAkses=:LevelAkses";
+                   Nama=:Nama, 
+                   Sex=:Sex, 
+                   Kontak=:Kontak, 
+                   Alamat=:Alamat, 
+                   Email=:Email, 
+                   Password=:Password, 
+                   LevelAkses=:LevelAkses,
+                   Status=:Status";
     
        // prepare query
        $stmt = $this->conn->prepare($query);
@@ -110,6 +118,7 @@ class Karyawan{
        $this->Email=htmlspecialchars(strip_tags($this->Email));
        $this->Password=htmlspecialchars(strip_tags($this->Password));
        $this->LevelAkses=htmlspecialchars(strip_tags($this->LevelAkses));
+       $this->Status=htmlspecialchars(strip_tags($this->Status));
     
        // bind values
        $stmt->bindParam(":Nama", $this->Nama);
@@ -119,6 +128,7 @@ class Karyawan{
        $stmt->bindParam(":Email", $this->Email);
        $stmt->bindParam(":Password", $this->Password);
        $stmt->bindParam(":LevelAkses", $this->LevelAkses);
+       $stmt->bindParam(":Status", $this->Status);
     
        // execute query
        if($stmt->execute()){
@@ -137,11 +147,12 @@ class Karyawan{
                    " . $this->table_name . "
                SET
                     Nama=:Nama, 
-                    Alamat=:Alamat, 
-                    Kontak=:Kontak, 
                     Sex=:Sex, 
-                    Email=:Email,
-                    Password=:Password
+                    Kontak=:Kontak, 
+                    Alamat=:Alamat, 
+                    Email=:Email, 
+                    LevelAkses=:LevelAkses,
+                    Status=:Status
                WHERE
                    IdKaryawan = :IdKaryawan";
     
@@ -149,20 +160,24 @@ class Karyawan{
        $stmt = $this->conn->prepare($query);
     
        // sanitize
+       $this->IdKaryawan=htmlspecialchars(strip_tags($this->IdKaryawan));
        $this->Nama=htmlspecialchars(strip_tags($this->Nama));
        $this->Alamat=htmlspecialchars(strip_tags($this->Alamat));
        $this->Kontak=htmlspecialchars(strip_tags($this->Kontak));
        $this->Sex=htmlspecialchars(strip_tags($this->Sex));
        $this->Email=htmlspecialchars(strip_tags($this->Email));
-       $this->Password=htmlspecialchars(strip_tags($this->Password));
+       $this->LevelAkses=htmlspecialchars(strip_tags($this->LevelAkses));
+       $this->Status=htmlspecialchars(strip_tags($this->Status));
     
        // bind new values
+       $stmt->bindParam(":IdKaryawan", $this->IdKaryawan);
        $stmt->bindParam(":Nama", $this->Nama);
        $stmt->bindParam(":Alamat", $this->Alamat);
        $stmt->bindParam(":Kontak", $this->Kontak);
        $stmt->bindParam(":Sex", $this->Sex);
        $stmt->bindParam(":Email", $this->Email);
-       $stmt->bindParam(":Password", $this->Password);
+       $stmt->bindParam(":LevelAkses", $this->LevelAkses);
+       $stmt->bindParam(":Status", $this->Status);
     
        // execute the query
        if($stmt->execute()){

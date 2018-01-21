@@ -48,6 +48,10 @@ class DetailBeli{
         
            // execute query
            $stmt->execute();
+
+           $rowRetun = $stmt->fetch(PDO::FETCH_ASSOC);
+           $this->BarangId=$rowRetun['BarangId'];
+           $this->PembelianId=$rowRetun['PembelianId'];
         
            return $stmt;
         }
@@ -66,6 +70,41 @@ class DetailBeli{
          
             // execute query
             $stmt->execute();
+            /*
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->IdDetail=$row['IdDetail'];
+            $this->HargaBeli=$row['HargaBeli'];
+            $this->KodeBarang=$row['KodeBarang'];
+            $this->Jumlah=$row['Jumlah'];
+            $this->PembelianId=$row['PembelianId'];
+            $this->BarangId=$row['BarangId'];
+            */
+         
+            return $stmt;
+         }
+        
+         function readByKodeBarang(){
+        
+            // select all query
+            $query = "SELECT * from " . $this->table_name . " where KodeBarang=?";
+         
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+ 
+            $this->KodeBarang=htmlspecialchars(strip_tags($this->KodeBarang));
+ 
+            $stmt->bindParam(1, $this->KodeBarang);
+         
+            $stmt->execute();
+            
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->IdDetail=$row['IdDetail'];
+            $this->HargaBeli=$row['HargaBeli'];
+            $this->KodeBarang=$row['KodeBarang'];
+            $this->Jumlah=$row['Jumlah'];
+            $this->PembelianId=$row['PembelianId'];
+            $this->BarangId=$row['BarangId'];
+            
          
             return $stmt;
          }

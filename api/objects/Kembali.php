@@ -1,18 +1,16 @@
 <?php
-class DetailPenjualan{
- 
+class Kembali{
     // database connection and table name
     private $conn;
-    private $table_name = "detailpenjualan";
+    private $table_name = "return";
  
     // object properties
-    public $IdDetailPenjualan;
+    public $IdReturn;
+    public $IdSupplier;
+    public $TglReturn;
     public $Jumlah;
-    public $KodeBarang;
-    public $PenjualanId;
     public $DetailId;
-    public $TotalPembelian;
-    public $TotalJumlah;
+    public $TotalRetun;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -52,30 +50,11 @@ class DetailPenjualan{
         
            return $stmt;
         }
-
-
-        function readByPenjualanId(){
-        
-            // select all query
-            $query = "SELECT * from " . $this->table_name . " where PenjualanId=?";
-         
-            // prepare query statement
-            $stmt = $this->conn->prepare($query);
- 
-            $this->PenjualanId=htmlspecialchars(strip_tags($this->PenjualanId));
- 
-            $stmt->bindParam(1, $this->PenjualanId);
-         
-            // execute query
-            $stmt->execute();
-         
-            return $stmt;
-         }
     
         function readTotalPenjualan(){
         
             // select all query
-            $query = "SELECT sum(Jumlah) as TotalJumlah from " . $this->table_name . " where DetailId=?";
+            $query = "SELECT sum(Jumlah) as TotalReturn from " . $this->table_name . " where DetailId=?";
          
             // prepare query statement
             $stmt = $this->conn->prepare($query);
@@ -88,12 +67,10 @@ class DetailPenjualan{
             $stmt->execute();
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $this->TotalJumlah=$row['TotalJumlah'];
+            $this->TotalRetun=$row['TotalReturn'];
          
             return $stmt;
          }
-    
-         
 
     
 
@@ -104,34 +81,69 @@ class DetailPenjualan{
        $query = "INSERT INTO
                    " . $this->table_name . "
                SET
-                   KodeBarang=:KodeBarang, 
-                   Jumlah=:Jumlah, 
-                   PenjualanId=:PenjualanId, 
+                   IdSupplier=:IdSupplier, 
+                   TglReturn=:TglReturn, 
+                   Jumlah=:Jumlah,
                    DetailId=:DetailId";
     
        // prepare query
        $stmt = $this->conn->prepare($query);
     
        // sanitize
-       $this->KodeBarang=htmlspecialchars(strip_tags($this->KodeBarang));
+       $this->IdSupplier=htmlspecialchars(strip_tags($this->IdSupplier));
+       $this->TglReturn=htmlspecialchars(strip_tags($this->TglReturn));
        $this->Jumlah=htmlspecialchars(strip_tags($this->Jumlah));
-       $this->PenjualanId=htmlspecialchars(strip_tags($this->PenjualanId));
        $this->DetailId=htmlspecialchars(strip_tags($this->DetailId));
     
        // bind values
-       $stmt->bindParam(":KodeBarang", $this->KodeBarang);
+       $stmt->bindParam(":IdSupplier", $this->IdSupplier);
+       $stmt->bindParam(":TglReturn", $this->TglReturn);
        $stmt->bindParam(":Jumlah", $this->Jumlah);
-       $stmt->bindParam(":PenjualanId", $this->PenjualanId);
        $stmt->bindParam(":DetailId", $this->DetailId);
     
        // execute query
        if($stmt->execute()){
-            $this->IdDetailPenjualan = $this->conn->lastInsertId();
+            $this->IdReturn = $this->conn->lastInsertId();
            return true;
        }else{
            return false;
        }
    }
+
+   function insert(){
+    
+    // query to insert record
+    $query = "INSERT INTO
+                " . $this->table_name . "
+            SET
+                IdSupplier=:IdSupplier, 
+                TglReturn=:TglReturn, 
+                Jumlah=:Jumlah,
+                DetailId=:DetailId";
+ 
+    // prepare query
+    $stmt = $this->conn->prepare($query);
+ 
+    // sanitize
+    $this->IdSupplier=htmlspecialchars(strip_tags($this->IdSupplier));
+    $this->TglReturn=htmlspecialchars(strip_tags($this->TglReturn));
+    $this->Jumlah=htmlspecialchars(strip_tags($this->Jumlah));
+    $this->DetailId=htmlspecialchars(strip_tags($this->DetailId));
+ 
+    // bind values
+    $stmt->bindParam(":IdSupplier", $this->IdSupplier);
+    $stmt->bindParam(":TglReturn", $this->TglReturn);
+    $stmt->bindParam(":Jumlah", $this->Jumlah);
+    $stmt->bindParam(":DetailId", $this->DetailId);
+ 
+    // execute query
+    if($stmt->execute()){
+         $this->IdReturn = $this->conn->lastInsertId();
+        return true;
+    }else{
+        return false;
+    }
+}
 
    // update the product
     function update(){
@@ -140,30 +152,30 @@ class DetailPenjualan{
        $query = "UPDATE
                    " . $this->table_name . "
                SET
-                    KodeBarang=:KodeBarang,
+                    IdSupplier=:IdSupplier, 
+                    TglReturn=:TglReturn, 
                     Jumlah=:Jumlah,
-                    PenjualanId=:PenjualanId,
                     DetailId=:DetailId
                WHERE
-                   IdDetailPenjualan = :IdDetailPenjualan";
+                   IdPrice = :IdPrice";
     
        // prepare query statement
        $stmt = $this->conn->prepare($query);
     
        // sanitize
       // sanitize
-      $this->KodeBarang=htmlspecialchars(strip_tags($this->KodeBarang));
-      $this->Jumlah=htmlspecialchars(strip_tags($this->Jumlah));
-      $this->PenjualanId=htmlspecialchars(strip_tags($this->PenjualanId));
-      $this->DetailId=htmlspecialchars(strip_tags($this->DetailId));
-      $this->IdDetailPenjualan=htmlspecialchars(strip_tags($this->IdDetailPenjualan));
-   
-      // bind values
-      $stmt->bindParam(":KodeBarang", $this->KodeBarang);
-      $stmt->bindParam(":Jumlah", $this->Jumlah);
-      $stmt->bindParam(":PenjualanId", $this->PenjualanId);
-      $stmt->bindParam(":DetailId", $this->DetailId);
-      $stmt->bindParam(":IdDetailPenjualan", $this->IdDetailPenjualan);
+      $this->IdSupplier=htmlspecialchars(strip_tags($this->IdSupplier));
+       $this->TglReturn=htmlspecialchars(strip_tags($this->TglReturn));
+       $this->Jumlah=htmlspecialchars(strip_tags($this->Jumlah));
+       $this->DetailId=htmlspecialchars(strip_tags($this->DetailId));
+       $this->IdReturn=htmlspecialchars(strip_tags($this->IdReturn));
+    
+       // bind values
+       $stmt->bindParam(":IdSupplier", $this->IdSupplier);
+       $stmt->bindParam(":TglReturn", $this->TglReturn);
+       $stmt->bindParam(":Jumlah", $this->Jumlah);
+       $stmt->bindParam(":DetailId", $this->DetailId);
+       $stmt->bindParam(":IdReturn", $this->IdReturn);
     
        // execute the query
        if($stmt->execute()){
@@ -177,16 +189,16 @@ class DetailPenjualan{
     function delete(){
     
        // delete query
-       $query = "DELETE FROM " . $this->table_name . " WHERE IdDetailPenjualan = ?";
+       $query = "DELETE FROM " . $this->table_name . " WHERE IdRerutn = ?";
     
        // prepare query
        $stmt = $this->conn->prepare($query);
     
        // sanitize
-       $this->IdDetail=htmlspecialchars(strip_tags($this->IdDetailPenjualan));
+       $this->IdReturn=htmlspecialchars(strip_tags($this->IdReturn));
     
        // bind id of record to delete
-       $stmt->bindParam(1, $this->IdDetail);
+       $stmt->bindParam(1, $this->IdReturn);
     
        // execute query
        if($stmt->execute()){
@@ -197,3 +209,4 @@ class DetailPenjualan{
        }
    }
 }
+?>

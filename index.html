@@ -74,9 +74,10 @@
                     }).then(function(response) {
                         if (response.data.records[0].Level == "Admin") {
                             window.location.href = 'admin.html';
-                        } else {
+                        } else if (response.data.records[0].Level == "Staf") {
                             window.location.href = 'penjualan.html';
-                        }
+                        } else
+                            window.location.href = 'gudang.html';
 
                     }, function(error) {
                         alert(error.massage);

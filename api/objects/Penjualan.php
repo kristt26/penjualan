@@ -11,6 +11,7 @@ class Penjualan{
     public $Tgl;
     public $TotalBayar;
     public $KaryawanId;
+    public $ItemBarang;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -50,6 +51,20 @@ class Penjualan{
         
            return $stmt;
         }
+    
+        function readByNota(){
+        
+            // select all query
+            $query = "SELECT * from " . $this->table_name . " ORDER BY Nota DESC LIMIT 1";
+         
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+         
+            // execute query
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->Nota=$row['Nota'];         
+         }
 
     
 

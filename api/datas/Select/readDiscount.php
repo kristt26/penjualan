@@ -9,6 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // include database and object files
 include_once '../../../api/config/database.php';
 include_once '../../../api/objects/Barang.php';
+include_once '../../../api/objects/Discount.php';
  
 // instantiate database and product object
 $database = new Database();
@@ -16,46 +17,50 @@ $db = $database->getConnection();
  
 // initialize object
 $barang = new Barang($db);
+
+$discount = new Discount($db);
  
 // query products
-$stmt = $barang->read();   
-$num = $stmt->rowCount();
+$stmtdiscount = $discount->read();   
+$num = $stmtdiscount->rowCount();
  
 // check if more than 0 record found
 if($num>0){
  
     // products array
-    $products_arr=array(
-        "message"=>"Barang is Found",
+    $discount_arr=array(
+        "message"=>"Discount is Found",
         "records"=>array()
     );
  
     // retrieve our table contents
     // fetch() is faster than fetchAll()
     // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+    while ($row = $stmtdiscount->fetch(PDO::FETCH_ASSOC)){
         // extract row
         // this will make $row['name'] to
         // just $name only
         extract($row);
- 
-        $product_item=array(
-            "IdBarang" => $IdBarang,
-            "NamaBarang" => $NamaBarang,
-            "Stock" => $Stock,
-            "Keterangan" => $Keterangan,
-            "KategoriId"=> $KategoriId
+        $barang->IdBarang=$BarangId;
+        $barang->readOne(); 
+        $discount_item=array(
+            "IdDiscount"=>$IdDiscount,
+            "BarangId" => $BarangId,
+            "NamaBarang" => $barang->NamaBarang,
+            "MasaBerlaku"=> $MasaBerlaku,
+            "Discount"=>$Discount,
+            "Keterangan" => $Keterangan
         );
  
-        array_push($products_arr["records"], $product_item);
+        array_push($discount_arr["records"], $discount_item);
     }
  
-    echo json_encode($products_arr);
+    echo json_encode($discount_arr);
 }
  
 else{
     echo json_encode(
-        array("message" => "No bidang found.")
+        array("message" => "No Discount found.")
     );
 }
 ?>

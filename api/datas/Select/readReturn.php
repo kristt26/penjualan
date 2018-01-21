@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // include database and object files
 include_once '../../../api/config/database.php';
 include_once '../../../api/objects/Barang.php';
-include_once '../../../api/objects/Return.php';
+include_once '../../../api/objects/Returnn.php';
 include_once '../../../api/objects/DetailBeli.php';
 include_once '../../../api/objects/Supplier.php';
 include_once '../../../api/objects/Pembelian.php';
@@ -47,16 +47,21 @@ if($num>0){
         $supplier->IdSupplier=$IdSupplier;
         $supplier->readOne();
         $detail->IdDetail=$DetailId;
-        
+        $detail->readOne();
+        $barang->IdBarang=$detail->BarangId;
+        $barang->readOne();
+        $pembelian->IdPembelian=$detail->PembelianId;
+        $pembelian->readOne();
          
         $product_item=array(
             "IdReturn" => $IdReturn,
             "IdSupplier" => $IdSupplier,
             "TglReturn" => $TglReturn,
             "Jumlah" => $Jumlah,
-            "DetailId"=> $KategoriId,
+            "DetailId"=> $DetailId,
             "NamaSupplier"=>$supplier->NamaSupplier,
-            ""
+            "NamaBarang"=>$barang->NamaBarang,
+            "TglBeli"=>$pembelian->TglBeli
         );
  
         array_push($products_arr["records"], $product_item);

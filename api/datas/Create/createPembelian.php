@@ -44,6 +44,7 @@ try{
         "TglBeli"=>$pembelian->TglBeli,
         "TotalBayar"=>$pembelian->TotalBayar,
         "SupplierId"=>$pembelian->SuplierId,
+        "NamaSupplier"=>$data->NamaSupplier,
         "ItemBarang"=>array()
     );
     foreach($pembelian->ItemBarang as &$Value)
@@ -65,7 +66,8 @@ try{
             "Jumlah"=>$detailbeli->Jumlah,
             "PembelianId"=>$detailbeli->PembelianId,
             "BarangId"=>$detailbeli->BarangId,
-            "NamaBarang"=>$barang->NamaBarang
+            "NamaBarang"=>$barang->NamaBarang,
+            "KodeBarang"=>$detailbeli->KodeBarang
         );
         
         array_push($itemPembelian['ItemBarang'],$itemDetail);

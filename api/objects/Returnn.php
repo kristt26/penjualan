@@ -3,7 +3,7 @@ class Returnn{
  
     // database connection and table name
     private $conn;
-    private $table_name = "return";
+    private $table_name = "returnn";
  
     // object properties
     public $IdReturn;
@@ -11,6 +11,7 @@ class Returnn{
     public $TglReturn;
     public $Jumlah;
     public $DetailId;
+    public $TotalRetun;
  
     // constructor with $db as database connection
     public function __construct($db){
@@ -50,6 +51,27 @@ class Returnn{
         
            return $stmt;
         }
+    
+        function readTotalPenjualan(){
+        
+            // select all query
+            $query = "SELECT sum(Jumlah) as TotalReturn from " . $this->table_name . " where DetailId=?";
+         
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+ 
+            $this->DetailId=htmlspecialchars(strip_tags($this->DetailId));
+ 
+            $stmt->bindParam(1, $this->DetailId);
+         
+            // execute query
+            $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->TotalRetun=$row['TotalReturn'];
+         
+            return $stmt;
+         }
 
     
 
@@ -88,6 +110,41 @@ class Returnn{
            return false;
        }
    }
+
+   function insert(){
+    
+    // query to insert record
+    $query = "INSERT INTO
+                " . $this->table_name . "
+            SET
+                IdSupplier=:IdSupplier, 
+                TglReturn=:TglReturn, 
+                Jumlah=:Jumlah,
+                DetailId=:DetailId";
+ 
+    // prepare query
+    $stmt = $this->conn->prepare($query);
+ 
+    // sanitize
+    $this->IdSupplier=htmlspecialchars(strip_tags($this->IdSupplier));
+    $this->TglReturn=htmlspecialchars(strip_tags($this->TglReturn));
+    $this->Jumlah=htmlspecialchars(strip_tags($this->Jumlah));
+    $this->DetailId=htmlspecialchars(strip_tags($this->DetailId));
+ 
+    // bind values
+    $stmt->bindParam(":IdSupplier", $this->IdSupplier);
+    $stmt->bindParam(":TglReturn", $this->TglReturn);
+    $stmt->bindParam(":Jumlah", $this->Jumlah);
+    $stmt->bindParam(":DetailId", $this->DetailId);
+ 
+    // execute query
+    if($stmt->execute()){
+         $this->IdReturn = $this->conn->lastInsertId();
+        return true;
+    }else{
+        return false;
+    }
+}
 
    // update the product
     function update(){

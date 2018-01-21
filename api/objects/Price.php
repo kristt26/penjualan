@@ -32,6 +32,24 @@ class Price{
        return $stmt;
     }
 
+    function readByStatus(){
+        
+        // select all query
+        $query = "SELECT * from " . $this->table_name . " where Status=?";
+     
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        $this->Status=htmlspecialchars(strip_tags($this->Status));
+
+        $stmt->bindParam(1, $this->Status);
+     
+        // execute query
+        $stmt->execute();
+     
+        return $stmt;
+     }
+
 
     function readOne(){
         
@@ -50,6 +68,47 @@ class Price{
         
            return $stmt;
         }
+
+
+        function readByBarang(){
+        
+            // select all query
+            $query = "SELECT * from " . $this->table_name . " where BarangId=? and Status=?";
+         
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+ 
+            $this->BarangId=htmlspecialchars(strip_tags($this->BarangId));
+            $this->Status=htmlspecialchars(strip_tags($this->Status));
+ 
+            $stmt->bindParam(1, $this->BarangId);
+            $stmt->bindParam(2, $this->Status);
+         
+            // execute query
+            $stmt->execute();
+            return $stmt;
+         }
+
+         function readByTgl($Tgl){
+        
+            // select all query
+            $query = "SELECT * from " . $this->table_name . " where BarangId=? and CreateDate<=? and CreateDate>=?";
+         
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+ 
+            $this->BarangId=htmlspecialchars(strip_tags($this->BarangId));
+            $Tgl=htmlspecialchars(strip_tags($Tgl));
+ 
+            $stmt->bindParam(1, $this->BarangId);
+            $stmt->bindParam(2, $Tgl);
+            $stmt->bindParam(3, $Tgl);
+         
+            // execute query
+            $stmt->execute();
+
+            return $stmt;
+         }
 
     
 
@@ -98,7 +157,6 @@ class Price{
                SET
                     Price=:Price, 
                     CreateDate=:CreateDate, 
-                    Status=:Status,
                     BarangId=:BarangId
                WHERE
                    IdPrice = :IdPrice";
@@ -110,14 +168,12 @@ class Price{
       // sanitize
       $this->Price=htmlspecialchars(strip_tags($this->Price));
        $this->CreateDate=htmlspecialchars(strip_tags($this->CreateDate));
-       $this->Status=htmlspecialchars(strip_tags($this->Status));
        $this->BarangId=htmlspecialchars(strip_tags($this->BarangId));
        $this->IdPrice=htmlspecialchars(strip_tags($this->IdPrice));
     
        // bind values
        $stmt->bindParam(":Price", $this->Price);
        $stmt->bindParam(":CreateDate", $this->CreateDate);
-       $stmt->bindParam(":Status", $this->Status);
        $stmt->bindParam(":BarangId", $this->BarangId);
        $stmt->bindParam(":IdPrice", $this->IdPrice);
     
@@ -128,6 +184,36 @@ class Price{
            return false;
        }
    }
+
+   function updateStatus($DataStatus){
+    
+    // update query
+        $query = "UPDATE
+                    " . $this->table_name . "
+                SET
+                    Status=:Status
+                WHERE
+                    BarangId = :BarangId";
+    
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+    
+        // sanitize
+    // sanitize
+        $DataStatus=htmlspecialchars(strip_tags($DataStatus));
+        $this->BarangId=htmlspecialchars(strip_tags($this->BarangId));
+    
+        // bind values
+        $stmt->bindParam(":Status", $DataStatus);
+        $stmt->bindParam(":BarangId", $this->BarangId);
+    
+        // execute the query
+        if($stmt->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
    // delete the product
     function delete(){

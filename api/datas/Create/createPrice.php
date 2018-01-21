@@ -10,33 +10,42 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../../../api/config/database.php';
  
 // instantiate product object
-include_once '../../../api/objects/Supplier.php';
+include_once '../../../api/objects/Price.php';
  
 $database = new Database();
 $db = $database->getConnection();
  
-$supplier = new Supplier($db);
+$price = new Price($db);
+
  
 // get posted data
 $data =json_decode(file_get_contents("php://input"));
  
 
 // set product property values
-$supplier->NamaSupplier = $data->NamaSupplier;
-$supplier->Telp = $data->Telp;
-$supplier->Alamat = $data->Alamat;
+$price->Price = $data->Price;
+$price->CreateDate = $data->CreateDate;
+$price->BarangId = $data->BarangId;
+$price->Status="true";
  
-// create the product
-if($supplier->create()){
+$statusAktif="false";
+if($price->updateStatus($statusAktif))
+{
+    if($price->create()){
+    
+    }
     echo '{';
-        echo '"message": "'.$supplier->IdSupplier.'"';
+        echo '"message": "'.$price->IdPrice.'"';
     echo '}';
-}
+} 
+
+// create the product
+
  
 // if unable to create the product, tell the user
 else{
     echo '{';
-        echo '"message": "Unable to create Supplier"';
+        echo '"message": "Unable to Create Price"';
     echo '}';
 }
 

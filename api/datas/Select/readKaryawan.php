@@ -8,25 +8,25 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
  
 // include database and object files
 include_once '../../../api/config/database.php';
-include_once '../../../api/objects/Barang.php';
+include_once '../../../api/objects/Karyawan.php';
  
 // instantiate database and product object
 $database = new Database();
 $db = $database->getConnection();
  
 // initialize object
-$barang = new Barang($db);
+$karyawan = new Karyawan($db);
  
 // query products
-$stmt = $barang->read();   
+$stmt = $karyawan->read();   
 $num = $stmt->rowCount();
  
 // check if more than 0 record found
 if($num>0){
  
     // products array
-    $products_arr=array(
-        "message"=>"Barang is Found",
+    $karyawan_arr=array(
+        "message"=>"Karyawan Found",
         "records"=>array()
     );
  
@@ -39,18 +39,21 @@ if($num>0){
         // just $name only
         extract($row);
  
-        $product_item=array(
-            "IdBarang" => $IdBarang,
-            "NamaBarang" => $NamaBarang,
-            "Stock" => $Stock,
-            "Keterangan" => $Keterangan,
-            "KategoriId"=> $KategoriId
+        $karyawan_item=array(
+            "IdKaryawan" => $IdKaryawan,
+            "Nama" => $Nama,
+            "Sex"=>$Sex,
+            "Kontak"=>$Kontak,
+            "Alamat"=>$Alamat,
+            "Email"=>$Email,
+            "Password"=>$Password,
+            "LevelAkses"=>$LevelAkses
         );
  
-        array_push($products_arr["records"], $product_item);
+        array_push($karyawan_arr["records"], $karyawan_item);
     }
  
-    echo json_encode($products_arr);
+    echo json_encode($karyawan_arr);
 }
  
 else{

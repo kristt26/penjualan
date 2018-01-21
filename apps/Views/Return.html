@@ -11,7 +11,6 @@
                     <th>Tanggal Return</th>
                     <th>Jumlah</th>
                     <th>Barang</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,8 +19,8 @@
                     <td>{{item.NamaSupplier}}</td>
                     <td>{{item.TglReturn}}</td>
                     <td>{{item.Jumlah}}</td>
-                    <td>{{item.DetailId}}</td>
-                    <td class="center"><a href="!#EditReturn" data-toggle="modal" class="btn btn-success" ng-click="Selected(item)"><i class="icon-edit"></i></a></td>
+                    <td>{{item.NamaBarang}}</td>
+                    <!--<td class="center"><a href="!#EditReturn" data-toggle="modal" class="btn btn-success" ng-click="Selected(item)"><i class="icon-edit"></i></a></td>-->
                 </tr>
             </tbody>
         </table>
@@ -30,7 +29,7 @@
 
 
 <div id="TambahReturn" class="modal hide">
-    <form class="form-horizontal" ng-submit="InsertSupplier()">
+    <form class="form-horizontal" ng-submit="InsertReturn()">
         <div class="modal-header">
             <button data-dismiss="modal" class="close" type="button">×</button>
             <h3>Tambah Data Supplier</h3>
@@ -39,25 +38,31 @@
             <div class="control-group">
                 <label class="control-label">Supplier</label>
                 <div class="controls">
-                    <select class="form-control" ng-options="item as item.NamaKategori for item in DataKategoris track by item.IdKategori" ng-model="SelectedItemKategori"></select>
+                    <select class="form-control" ng-options="item as item.NamaSupplier for item in DatasSupplier track by item.IdSupplier" ng-model="SelectedItemSupplier" ng-change="SelectBarang(SelectedItemSupplier)"></select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Tanggal Beli</label>
+                <div class="controls">
+                    <input type="date" ng-model="InputBarang.TglBeli" required ng-change="SelectedTanggal()">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Tanggal Return</label>
                 <div class="controls">
-                    <input type="text" ng-model="InputBarang.NamaBarang" required>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Jumlah</label>
-                <div class="controls">
-                    <input type="text" ng-model="InputBarang.NamaBarang" required>
+                    <input type="date" ng-model="InputBarang.TglReturn" required>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Barang</label>
                 <div class="controls">
-                    <input type="text" ng-model="InputBarang.NamaBarang" required>
+                    <select class="form-control" ng-options="item as item.NamaBarang for item in DatasItemBarang track by item.IdDetail" ng-model="SelectedItemBarang"></select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Jumlah</label>
+                <div class="controls">
+                    <input type="text" ng-model="InputBarang.Jumlah" required>
                 </div>
             </div>
         </div>

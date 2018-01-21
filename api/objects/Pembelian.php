@@ -36,20 +36,40 @@ class Pembelian{
     function readOne(){
         
            // select all query
-           $query = "SELECT * from " . $this->table_name . " where IdDetailPenjualan=?";
+           $query = "SELECT * from " . $this->table_name . " where IdPembelian=?";
         
            // prepare query statement
            $stmt = $this->conn->prepare($query);
 
-           $this->IdDetailPenjualan=htmlspecialchars(strip_tags($this->IdDetailPenjualan));
+           $this->IdPembelian=htmlspecialchars(strip_tags($this->IdPembelian));
 
-           $stmt->bindParam(1, $this->IdDetailPenjualan);
+           $stmt->bindParam(1, $this->IdPembelian);
         
            // execute query
            $stmt->execute();
+           $rowPembelian = $stmt->fetch(PDO::FETCH_ASSOC);
+           $this->TglBeli=$rowPembelian['TglBeli'];
         
            return $stmt;
         }
+
+        function readBySupplier(){
+        
+            // select all query
+            $query = "SELECT * from " . $this->table_name . " where SuplierId=?";
+         
+            // prepare query statement
+            $stmt = $this->conn->prepare($query);
+ 
+            $this->SuplierId=htmlspecialchars(strip_tags($this->SuplierId));
+ 
+            $stmt->bindParam(1, $this->SuplierId);
+         
+            // execute query
+            $stmt->execute();
+         
+            return $stmt;
+         }
 
     
 
