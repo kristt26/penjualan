@@ -66,6 +66,11 @@ app.config(function($routeProvider) {  
         controller: "PenjualanController"
     })
 
+    .when("/LStock", {
+        templateUrl: "apps/Laporan/LaporanStock.html",
+        controller: "LaporanController"
+    })
+
     .otherwise({ redirectTo: '/Main' })
 
 })

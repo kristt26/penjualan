@@ -59,17 +59,29 @@
     </form>
 </div>
 
-<div id="EditKategori" class="modal hide">
-    <form class="form-horizontal" ng-submit="UpdateKategori()">
+<div id="EditBarang" class="modal hide">
+    <form class="form-horizontal" ng-submit="UpdateBarang()">
         <div class="modal-header">
             <button data-dismiss="modal" class="close" type="button">×</button>
-            <h3>Edit Kategori</h3>
+            <h3>Edit Barang</h3>
         </div>
         <div class="modal-body">
             <div class="control-group">
-                <label class="control-label">Nama Kategori</label>
+                <label class="control-label">Kategori</label>
                 <div class="controls">
-                    <input type="text" name="Kategori" id="Kategori" ng-model="SelectedItem.NamaKategori" required>
+                    <select class="form-control" ng-options="item as item.NamaKategori for item in DataKategoris track by item.IdKategori" ng-model="SelectedItemKategori"></select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Nama Barang</label>
+                <div class="controls">
+                    <input type="text" ng-model="DataUpdateBarang.NamaBarang" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Nama Keterangan</label>
+                <div class="controls">
+                    <textarea ng-model="DataUpdateBarang.Keterangan"></textarea>
                 </div>
             </div>
         </div>

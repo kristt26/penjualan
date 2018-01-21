@@ -115,8 +115,6 @@ class Barang{
                    " . $this->table_name . "
                SET
                     NamaBarang=:NamaBarang,
-                    KodeBarang=:KodeBarang,
-                    Stock=:Stock,
                     Keterangan=:Keterangan,
                     KategoriId=:KategoriId
                WHERE
@@ -127,8 +125,6 @@ class Barang{
     
        // sanitize
        $this->NamaBarang=htmlspecialchars(strip_tags($this->NamaBarang));
-       $this->KodeBarang=htmlspecialchars(strip_tags($this->KodeBarang));
-       $this->Stock=htmlspecialchars(strip_tags($this->Stock));
        $this->Keterangan=htmlspecialchars(strip_tags($this->Keterangan));
        $this->KategoriId=htmlspecialchars(strip_tags($this->KategoriId));
        $this->IdBarang=htmlspecialchars(strip_tags($this->IdBarang));
@@ -136,8 +132,6 @@ class Barang{
        // bind new values
        $stmt->bindParam(":NamaBarang", $this->NamaBarang);
        $stmt->bindParam(":KategoriId", $this->KategoriId);
-       $stmt->bindParam(":KodeBarang", $this->KodeBarang);
-       $stmt->bindParam(":Stock", $this->Stock);
        $stmt->bindParam(":Keterangan", $this->Keterangan);
        $stmt->bindParam(":IdBarang", $this->IdBarang);
     

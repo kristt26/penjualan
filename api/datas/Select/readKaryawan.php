@@ -38,6 +38,10 @@ if($num>0){
         // this will make $row['name'] to
         // just $name only
         extract($row);
+        if($Status=="true")
+            $KetStatus="Aktif";
+        else
+            $KetStatus="Tidak Aktif";
  
         $karyawan_item=array(
             "IdKaryawan" => $IdKaryawan,
@@ -47,7 +51,9 @@ if($num>0){
             "Alamat"=>$Alamat,
             "Email"=>$Email,
             "Password"=>$Password,
-            "LevelAkses"=>$LevelAkses
+            "LevelAkses"=>$LevelAkses,
+            "Status"=>$Status,
+            "KetStatus"=>$KetStatus
         );
  
         array_push($karyawan_arr["records"], $karyawan_item);

@@ -10,41 +10,35 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../../../api/config/database.php';
  
 // instantiate product object
-include_once '../../../api/objects/Karyawan.php';
+include_once '../../../api/objects/Barang.php';
  
 $database = new Database();
 $db = $database->getConnection();
  
-$karyawan = new Karyawan($db);
+$barang = new Barang($db);
  
 // get posted data
 $data =json_decode(file_get_contents("php://input"));
  
 
 // set product property values
-$karyawan->IdKaryawan=$data->IdKaryawan;
-$karyawan->Nama = $data->Nama;
-$karyawan->Sex = $data->Sex;
-$karyawan->Kontak = $data->Kontak;
-$karyawan->Alamat = $data->Alamat;
-$karyawan->Email = $data->Email;
-$karyawan->Password = md5("12345678");
-$karyawan->LevelAkses = $data->LevelAkses;
-$karyawan->Status = $data->Status;
-
-
+$barang->IdBarang = $data->IdBarang;
+$barang->NamaBarang = $data->NamaBarang;
+$barang->Keterangan = $data->Keterangan;
+$barang->KategoriId = $data->KategoriId;
+$barang->Stock=0;
  
 // create the product
-if($karyawan->update()){
+if($barang->update()){
     echo '{';
-        echo '"message": "Karyawan Was Update"';
+        echo '"message": "Barang Was Update"';
     echo '}';
 }
  
 // if unable to create the product, tell the user
 else{
     echo '{';
-        echo '"message": "Unable to create Karyawan"';
+        echo '"message": "Unable to update Barang"';
     echo '}';
 }
 

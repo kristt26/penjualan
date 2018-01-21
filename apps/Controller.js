@@ -51,7 +51,7 @@ angular.module("Ctrl", [])
                     Data.IdKategori = response.data.message;
                     $scope.DataKategoris.push(angular.copy(Data));
                 } else
-                    alert("Data Gagal disimpan");
+                    alert("Unable to Create Kategori");
             }, function(error) {
                 alert(error.Massage);
             })
@@ -76,8 +76,9 @@ angular.module("Ctrl", [])
                             value.NamaKategori = Data.NamaKategori;
                         }
                     });
+                    alert(response.data.message);
                 } else
-                    alert("Data Gagal Dirubah");
+                    alert("Unable to Create Kategori");
             }, function(error) {
                 alert(error.Massage);
             })
@@ -111,6 +112,7 @@ angular.module("Ctrl", [])
     $scope.SelectedItem = {};
     $scope.InputBarang = {};
     $scope.DataKategoris = [];
+    $scope.DataUpdateBarang = {};
     $scope.SelectedItemKategori = {};
 
     $scope.Init = function() {
@@ -144,10 +146,6 @@ angular.module("Ctrl", [])
             }, function(error) {
                 alert(error.message);
             })
-
-
-
-
     }
 
     //Insert Data Bidang
@@ -166,8 +164,10 @@ angular.module("Ctrl", [])
                     Data.IdBarang = response.data.message;
                     Data.Stock = 0;
                     $scope.DatasBarang.push(angular.copy(Data));
+                    alert("Barang Was Created");
+                    window.location.reload();
                 } else
-                    alert("Data Gagal disimpan");
+                    alert("Unable to Create Barang");
             }, function(error) {
                 alert(error.Massage);
             })
@@ -176,29 +176,34 @@ angular.module("Ctrl", [])
 
     }
 
-
     $scope.Selected = function(item) {
-        $scope.DataSelected = item;
+        $scope.DataUpdateBarang = item;
+        angular.forEach($scope.DataKategoris, function(value, key) {
+            if (value.IdKategori == item.KategoriId) {
+                $scope.SelectedItemKategori = value;
+            }
+        })
     }
 
     //Funsi Update Bidang
-    $scope.UpdateDataBidang = function() {
-        var Data = $scope.DataSelected;
-        var UrlUpdateBidang = "api/datas/updateBidang.php";
+    $scope.UpdateBarang = function() {
+        var Data = $scope.DataUpdateBarang;
+        var UrlUpdateBidang = "api/datas/Update/updateBarang.php";
         $http({
                 method: "post",
                 url: UrlUpdateBidang,
                 data: Data
             })
             .then(function(response) {
-                if (response.data.message == "Bidang was updated") {
-                    angular.forEach($scope.DatasBidang, function(value, key) {
-                        if (value.IdBidang == Data.IdBidang) {
-                            value.NamaBidang = Data.NamaBidang;
-                            value.KepalaBagian = Data.KepalaBagian;
-                            alert(response.data.message);
+                if (response.data.message == "Barang Was Update") {
+                    angular.forEach($scope.DatasBarang, function(value, key) {
+                        if (value.IdBarang == Data.IdBarang) {
+                            value.NamaBarang = Data.NamaBarang;
+                            value.Keterangan = Data.Keterangan;
                         }
                     })
+                    alert(response.data.message);
+                    window.location.reload();
                 } else
                     alert(response.data.message);
             }, function(error) {
@@ -238,7 +243,8 @@ angular.module("Ctrl", [])
                 if (response.data.message != "Unable to create Supplier") {
                     Data.IdSupplier = response.data.message;
                     $scope.DatasSupplier.push(angular.copy(Data));
-                    alert("Supplier can't Insert");
+                    alert("Supplier Was Created");
+                    window.location.reload();
                 } else
                     alert(response.data.message);
             }, function(error) {
@@ -269,7 +275,7 @@ angular.module("Ctrl", [])
                     });
                     alert(response.data.message);
                 } else
-                    alert("Data Gagal Dirubah");
+                    alert("Unable to create Supplier");
             }, function(error) {
                 alert(error.Massage);
             })
@@ -375,6 +381,7 @@ angular.module("Ctrl", [])
                 $scope.InputPenjualan = {};
                 $scope.SelectedItemSupplier = {};
                 $scope.DataItemBarang = [];
+                alert("Pembelian was created")
                 window.location.href = 'gudang.html#!/Pembelian';
             }, function(error) {
                 alert(error.message);
@@ -469,7 +476,7 @@ angular.module("Ctrl", [])
                 if (response.data.message > 1) {
                     Data.IdReturn = response.data.message;
                     $scope.DatasReturn.push(angular.copy(Data));
-                    alert("Return Was Create");
+                    alert("Return Was Created");
                     //window.location.reload();
                 } else
                     alert(response.data.message);
@@ -524,8 +531,12 @@ angular.module("Ctrl", [])
             })
     }
 
+    $scope.Selected = function(item) {
+        $scope.DataUpdateKaryawan = item;
+    }
+
     $scope.UpdateKaryawan = function() {
-        var Data = $scope.InputKaryawan;
+        var Data = $scope.DataUpdateKaryawan;
         var UrlUpdateKaryawan = "api/datas/Update/updateKaryawan.php"
         $http({
                 method: "post",
@@ -535,7 +546,7 @@ angular.module("Ctrl", [])
             .then(function(response) {
                 if (response.data.message == "Karyawan Was Update") {
                     angular.forEach($scope.DatasKaryawan, function(value, key) {
-                        if (value.IdKategori == Data.IdKategori) {
+                        if (value.IdKaryawan == Data.IdKaryawan) {
                             value.Nama = Data.Nama;
                             value.Sex = Data.Sex;
                             value.Kontak = Data.Kontak;
@@ -825,6 +836,13 @@ angular.module("Ctrl", [])
 
 
 })
+
+.controller("LaporanController", function($scope, $http, SessionService) {
+
+
+
+})
+
 
 .controller("Controller", function($scope, $http, SessionService) {
 
