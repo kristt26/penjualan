@@ -779,6 +779,7 @@ angular.module("Ctrl", [])
     $scope.InputPenjualan = {};
     $scope.InputPenjualan.TotalBayar = 0;
     $scope.Jumlah = {};
+    $scope.DataItemDetail = {};
     $scope.InputPenjualan.ItemBarang = [];
     $scope.Init = function() {
         var Url = "api/datas/Select/readPenjualan.php";
@@ -832,6 +833,10 @@ angular.module("Ctrl", [])
         }, function(error) {
             alert(error.message);
         })
+    }
+
+    $scope.SelectedDetail = function(item) {
+        $scope.DataItemDetail = item;
     }
 
 

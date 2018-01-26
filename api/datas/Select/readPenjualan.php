@@ -111,6 +111,7 @@ if($numpenjualan>0){
                     "DetailId"=>$detail->IdDetail,
                     "NamaBarang" => $barang->NamaBarang,
                     "Keterangan" => $barang->Keterangan,
+                    "Jumlah"=>$Jumlah,
                     "Discount"=>$discount->Discount,
                     "Price"=>$price->Price,                
                 );
